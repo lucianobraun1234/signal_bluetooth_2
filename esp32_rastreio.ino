@@ -21,11 +21,13 @@ void ARDUINO_ISR_ATTR onTimer(){
     // delay(200);
     // digitalWrite(aciona,LOW);
     // delay(500);
-    tone(Output_25,262,500); 
+    //tone(Output_25,262,500); 
+     digitalWrite(Output_25,HIGH);
     
 
     }
     else{
+       digitalWrite(Output_25,LOW);
       Serial.println("bebe achado");
     }
 controle=0;
