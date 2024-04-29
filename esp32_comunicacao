@@ -1,0 +1,119 @@
+/*
+  Rui Santos
+  Complete project details at https://RandomNerdTutorials.com/esp8266-client-server-wi-fi/
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files.
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+*/
+String resposta;
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
+int botao=D1;
+int led=D0;
+int ledenvio=D4;
+bool status=false;
+#include <ESP8266WiFiMulti.h>
+ESP8266WiFiMulti WiFiMulti;
+
+const char* ssid = "ESP32";
+const char* password = "123456789";
+
+//Your IP address or domain name with URL path
+const char* serverNameon = "http://192.168.4.1/?/25/ON";
+const char* serverNameoff = "http://192.168.4.1/?/25/procurar";
+
+
+
+
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println();
+  digitalWrite(led,HIGH);
+  digitalWrite(ledenvio,HIGH);
+   pinMode(botao,INPUT);
+   pinMode(led,OUTPUT);
+   pinMode(ledenvio,OUTPUT);
+  
+ 
+ 
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("Connected to WiFi");
+  digitalWrite(led,LOW);
+}
+
+void loop() {
+   if ((WiFiMulti.run() == WL_CONNECTED)) {
+       status=!status;
+      digitalWrite(ledenvio,status);
+     resposta = httpGETRequest(serverNameon);
+   // Serial.print("resposta:");
+   // Serial.println(resposta);
+   }
+   delay(500);
+  //resposta = httpGETRequest(serverNameon);
+ // delay(500);
+  // resposta = httpGETRequest(serverNameoff);
+  // delay(500);
+ //if(digitalRead(botao)==LOW ){
+ // delay(500);
+ // if(digitalRead(botao)==LOW){
+  //  status=true;
+   // if ((WiFiMulti.run() == WL_CONNECTED)) {
+   //   digitalWrite(ledenvio,LOW);
+   //  resposta = httpGETRequest(serverNameon);
+   // Serial.print("resposta:");
+   // Serial.println(resposta);
+ //  }
+ // }
+  
+// }
+// if(status==true && digitalRead(botao)==HIGH){
+   // status=false;
+    // if ((WiFiMulti.run() == WL_CONNECTED)) {
+    // resposta = httpGETRequest(serverNameoff);
+    // digitalWrite(ledenvio,HIGH);
+    // Serial.print("resposta:");
+     //Serial.println(resposta);
+    // }
+ // }
+}
+
+String httpGETRequest(const char* serverName) {
+  WiFiClient client;
+  HTTPClient http;
+    
+  // Your IP address with path or Domain name with URL path 
+  http.begin(client, serverName);
+  
+  // Send HTTP POST request
+  int httpResponseCode = http.GET();
+  
+  String payload = "--"; 
+  
+  if (httpResponseCode>0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    payload = http.getString();
+  }
+  else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCode);
+     ESP.reset();
+  }
+  // Free resources
+  http.end();
+
+  return payload;
+}
