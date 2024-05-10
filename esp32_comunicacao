@@ -12,7 +12,7 @@ String resposta;
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
-int botao=D1;
+//int botao=D1;
 int led=D0;
 int ledenvio=D4;
 bool status=false;
@@ -23,8 +23,8 @@ const char* ssid = "ESP32";
 const char* password = "123456789";
 
 //Your IP address or domain name with URL path
-const char* serverNameon = "http://192.168.4.1/?/25/ON";
-const char* serverNameoff = "http://192.168.4.1/?/25/procurar";
+const char* serverNameon = "http://192.168.4.1/?ligar";
+const char* serverNameoff = "http://192.168.4.1/?procurar";
 
 
 
@@ -35,7 +35,7 @@ void setup() {
   Serial.println();
   digitalWrite(led,HIGH);
   digitalWrite(ledenvio,HIGH);
-   pinMode(botao,INPUT);
+   //pinMode(botao,INPUT);
    pinMode(led,OUTPUT);
    pinMode(ledenvio,OUTPUT);
   
@@ -106,6 +106,7 @@ String httpGETRequest(const char* serverName) {
     Serial.print("HTTP Response code: ");
     Serial.println(httpResponseCode);
     payload = http.getString();
+    Serial.println(payload);
   }
   else {
     Serial.print("Error code: ");
