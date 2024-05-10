@@ -50,7 +50,7 @@ void setup() {
 
   // Set alarm to call onTimer function every second (value in microseconds).
   // Repeat the alarm (third parameter)
-  timerAlarmWrite(timer, 3000000, true);
+  timerAlarmWrite(timer, 6000000, true);
 
   // Start an alarm
   timerAlarmEnable(timer);
@@ -84,7 +84,7 @@ client.println("Content-type:text/html");
 client.println("Connection: close");
 client.println();            
 /*turns the GPIOs 25 ON and OFF*/
-if (header.indexOf("GET /25/ON") >= 0) {
+if (header.indexOf("?ligar") >= 0) {
 Serial.println("GPIO 25 ON");
 Serial.println("cutucou on");
     controle=1;
@@ -94,7 +94,7 @@ Serial.println("cutucou on");
 }
 
 
-if (header.indexOf("GET /25/procurar") >= 0) {
+if (header.indexOf("?procurar") >= 0) {
 Serial.println("procurando bebe");
     controle=0;
     identifica="procurando bebe";
@@ -117,9 +117,9 @@ client.println("<h1>Linuxhint.com</h1>");
 
 // Display current state, and ON/OFF buttons for GPIO 25  
 client.println("<p>GPIO 25 LED situacao " + identifica+ "</p>");
-client.println("<p><a href='/25/ON'><button class='button'>ON</button></a></p>");
+client.println("<p><a href='?ligar'><button class='button'>ON</button></a></p>");
 client.println("<br><br><br>");
-client.println("<p><a href='/25/procurar'><button class='button'>procurar</button></a></p>");
+client.println("<p><a href='?procurar'><button class='button'>procurar</button></a></p>");
 // If the OutputGPIO25 is OFF, it displays the ON button      
           
 client.println("");            
